@@ -1,4 +1,6 @@
 import React from 'react'
+import Card from '../../components/Card'
+import ImageBook from '../../components/ImageBook'
 
 const BooksListItem = ({ book }) => {
   const toCurrency = n => `R$${(n ?? 0).toFixed(2)}`
@@ -6,25 +8,23 @@ const BooksListItem = ({ book }) => {
   return (
     <div class="card-container">
       <span class="card-info">
-        <div class="card-image">
-          <img src={book.image} alt={`${book.title} cover.`} />
-        </div>
+        <ImageBook image={book.image} alt={`${book.title} cover.`} />
 
         <div class="card-data">
-          <div class="card-text">
+          <Card>
             <h3>{book.name}</h3>
             <p>{book.author}</p>
-          </div>
+          </Card>
 
-          <div class="card-text">
+          <Card>
             <h3>Estoque atual</h3>
             <p>{book.quantity} Unidades</p>
-          </div>
+          </Card>
 
-          <div class="card-text">
+          <Card>
             <h3>Preço Atual</h3>
             <p>{toCurrency(book.price)}</p>
-          </div>
+          </Card>
         </div>
       </span>
     </div>

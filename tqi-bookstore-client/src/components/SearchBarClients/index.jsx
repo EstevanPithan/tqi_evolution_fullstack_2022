@@ -1,10 +1,17 @@
-import React from 'react'
 import * as S from './styled'
+import Title from '../Title'
 
-const Input = ({ title, isValid, value, onChange, name }) => {
+const SearchBarClients = ({
+  title,
+  isValid,
+  value,
+  onChange,
+  name,
+  handleSearch
+}) => {
   return (
     <S.Wrapper>
-      <h3>{title}</h3>
+      <Title titleh2={title} />
       <S.WrapperInput>
         {isValid ? (
           <S.ValidInputBar
@@ -23,6 +30,7 @@ const Input = ({ title, isValid, value, onChange, name }) => {
             placeholder="Digite aqui..."
           />
         )}
+        <button onClick={handleSearch}>Pesquisar</button>
       </S.WrapperInput>
       {!isValid && (
         <p className="p-feedback-invalid">Digite um {title} válido.</p>
@@ -31,4 +39,4 @@ const Input = ({ title, isValid, value, onChange, name }) => {
   )
 }
 
-export default Input
+export default SearchBarClients

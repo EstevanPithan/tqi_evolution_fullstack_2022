@@ -1,19 +1,15 @@
-import styled from  "styled-components"
+import styled from 'styled-components'
 
-const ButtonStyles = styled.button`
-    border: 1px solid #000000;
-    border-radius: 5px;
-    color: #fff;
-    background-color: #28a812;
-    transition: all 0.2s ease-in-out ;
-    font-size: 1rem;
-    height: 2rem;
-    width: 10ch;
-
-    &:hover{
-        filter: (brightness(0.8));
-        transform: scale(1.1);
-    }
+export const ButtonStyles = styled.button`
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  margin: 5px;
 `
-
-export default ButtonStyles
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0px 30px 0px 30px;
+`

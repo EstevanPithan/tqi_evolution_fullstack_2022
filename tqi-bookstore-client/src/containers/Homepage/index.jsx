@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import SearchBar from '../../components/SearchBar'
+import SearchBarBook from '../../components/SearchBarBook'
 import Main from '../../components/Main'
 import Spinner from '../../components/Spinner'
 import BooksList from './BooksList'
@@ -37,10 +37,8 @@ const Homepage = () => {
 
   return (
     <Main>
-      <main class="container">
-        <SearchBar title="LIVROS" onSearch={handleFilter} />
-        {isLoading ? <Spinner /> : <BooksList books={filteredBooks ?? []} />}
-      </main>
+      <SearchBarBook title="LIVROS" onSearch={handleFilter} />
+      {isLoading ? <Spinner /> : <BooksList books={filteredBooks ?? []} />}
     </Main>
   )
 }

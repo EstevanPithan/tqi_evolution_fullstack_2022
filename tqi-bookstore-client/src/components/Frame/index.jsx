@@ -1,7 +1,7 @@
 import * as S from './styled'
 
-const Card = ({ children }) => {
+const Frame = ({ children }) => {
   return <S.Wrapper>{children}</S.Wrapper>
 }
 
-export default Card
+export default Frame

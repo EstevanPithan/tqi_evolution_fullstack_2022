@@ -1,18 +1,13 @@
 import React from 'react'
+import Card from '../../components/Card'
 
 const ClientInfo = ({ client }) => {
   return (
-    <span class="card-info">
-      <div class="card-data">
-        <div class="card-text">
-          <div>
-            Nome: {client.name}
-            <br />
-            Email: {client.email} <br />
-          </div>
-        </div>
-      </div>
-    </span>
+    <Card>
+      Nome: {client.name}
+      <br />
+      Email: {client.email} <br />
+    </Card>
   )
 }
 

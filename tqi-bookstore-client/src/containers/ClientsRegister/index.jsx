@@ -84,7 +84,6 @@ const ClientsRegister = () => {
 
           <div className="registration-buttons">
             <button onClick={handleSubmit}>Salvar</button>
-            <button>Cancelar</button>
           </div>
         </div>
       </main>

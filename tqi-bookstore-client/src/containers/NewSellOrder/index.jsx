@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../components/Main'
-import SearchBar from '../../components/SearchBar'
+import SearchBar from '../../components/SearchBarBook'
 import Spinner from '../../components/Spinner'
 import BooksList from '../Homepage/BooksList'
-import Input from '../../components/Input'
+import Frame from '../../components/Frame'
 import ClientInfo from './ClientInfo'
-import Cart from './Cart'
+import Cart from './CartSell/Cart'
 import { api } from '../../services/api'
+import SearchBarClients from '../../components/SearchBarClients'
+import Title from '../../components/Title'
 
 const NewSellOrder = () => {
   const [formData, setFormData] = useState({
@@ -139,49 +141,36 @@ const NewSellOrder = () => {
 
   return (
     <Main>
-      <main className="container">
-        <h2>Nova Venda</h2>
-        <div className="search-bar-container">
-          <h2>CPF DO CLIENTE</h2>
-          <div class="search-wrapper">
-            <Input
-              title=""
-              name="cpf"
-              isValid={validation.cpf}
-              value={formData.cpf}
-              onChange={onChangeCpfInput}
-              onClick={handleSearchClient}
-            />
-            <button onClick={handleSearchClient}>Pesquisar</button>
-          </div>
-        </div>
-        <div class="cards-wrapper">
-          <div class="card-container">
-            <ClientInfo client={formData.client} />
-          </div>
-        </div>
-      </main>
+      <Title titleh2="Nova venda" />
+      <SearchBarClients
+        title="CPF do cliente"
+        name="cpf"
+        isValid={validation.cpf}
+        value={formData.cpf}
+        onChange={onChangeCpfInput}
+        handleSearch={handleSearchClient}
+      />
 
-      <main className="container">
-        <div className="search-bar-container">
-          <h2>Carrinho</h2>
-        </div>
-        <Cart
-          onAddToCart={onAddToCart}
-          onRemoveFromCart={onRemoveFromCart}
-          cart={cart}
-        />
-        <button onClick={handleSubmitOrder}>Enviar pedido</button>
-      </main>
+      <Frame>
+        <ClientInfo client={formData.client} />
+      </Frame>
 
-      <main class="container">
-        <SearchBar title="Adicionar Livros" onSearch={handleFilter} />
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <BooksList books={filteredBooks ?? []} onAddToCart={onAddToCart} />
-        )}
-      </main>
+      <Title titleh2="Carrinho" />
+
+      <Cart
+        onAddToCart={onAddToCart}
+        onRemoveFromCart={onRemoveFromCart}
+        cart={cart}
+      />
+
+      <button onClick={handleSubmitOrder}>Enviar pedido</button>
+
+      <SearchBar title="Adicionar Livros" onSearch={handleFilter} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <BooksList books={filteredBooks ?? []} onAddToCart={onAddToCart} />
+      )}
     </Main>
   )
 }

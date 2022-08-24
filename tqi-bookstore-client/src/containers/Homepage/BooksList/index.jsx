@@ -1,11 +1,14 @@
-import BooksListItem from "./BooksListItem"
+import BooksListItem from './BooksListItem'
 import React from 'react'
+import Frame from '../../../components/Frame'
 
-const BooksList = ({books, onAddToCart}) => {
+const BooksList = ({ books, onAddToCart }) => {
   return (
-    <div class="cards-wrapper">
-    {books.map(book => <BooksListItem key={book.id} book={book} onAddToCart={onAddToCart}/>)}
-    </div>
+    <Frame>
+      {books.map(book => (
+        <BooksListItem key={book.id} book={book} onAddToCart={onAddToCart} />
+      ))}
+    </Frame>
   )
 }
 

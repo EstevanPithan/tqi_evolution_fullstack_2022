@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../components/Main'
-import SearchBar from '../../components/SearchBar'
+import SearchBarBook from '../../components/SearchBarBook'
 import Spinner from '../../components/Spinner'
 import BooksList from '../Homepage/BooksList'
 import Input from '../../components/Input'
 import Cart from './Cart'
 import { api } from '../../services/api'
+import Frame from '../../components/Frame'
+import Title from '../../components/Title'
 
 const initialFormData = {
   invoiceNumber: '',
@@ -125,62 +127,52 @@ const NewSellOrder = () => {
 
   return (
     <Main>
-      <main className="container">
-        <div className="search-bar-container">
-          <h2>DADOS PARA A ENTRADA DE COMPRA</h2>
-        </div>
-
-        <div className="cards-wrapper">
-          <Input
-            title="Nº Nota Fiscal"
-            name="invoiceNumber"
-            isValid={validation.invoiceNumber}
-            value={formData.invoiceNumber}
-            onChange={handleInputChange}
-          />
-          <Input
-            title="Preço unitario"
-            name="price"
-            isValid={validation.price}
-            value={formData.price}
-            onChange={handleInputChange}
-          />
-          <Input
-            title="Quantidade"
-            name="quantity"
-            isValid={validation.quantity}
-            value={formData.quantity}
-            onChange={handleInputChange}
-          />
-          <Input
-            title="Observações"
-            name="observation"
-            isValid={validation.observation}
-            value={formData.observation}
-            onChange={handleInputChange}
-          />
-        </div>
-      </main>
-
-      <main className="container">
-        <div className="search-bar-container">
-          <h2>Livro para dar entrada</h2>
-        </div>
-        <Cart onAddToCart={onAddToCart} cart={cart} />
-        <button onClick={handleSubmit}>Enviar pedido</button>
-      </main>
-
-      <main class="container">
-        <SearchBar
-          title="Escolha um livro para dar entrada"
-          onSearch={handleFilter}
+      <Title titleh2="Dados para a entrada de compra" />
+      <Frame>
+        <Input
+          title="Nº Nota Fiscal"
+          name="invoiceNumber"
+          isValid={validation.invoiceNumber}
+          value={formData.invoiceNumber}
+          onChange={handleInputChange}
         />
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <BooksList books={filteredBooks ?? []} onAddToCart={onAddToCart} />
-        )}
-      </main>
+        <Input
+          title="Preço unitario"
+          name="price"
+          isValid={validation.price}
+          value={formData.price}
+          onChange={handleInputChange}
+        />
+        <Input
+          title="Quantidade"
+          name="quantity"
+          isValid={validation.quantity}
+          value={formData.quantity}
+          onChange={handleInputChange}
+        />
+        <Input
+          title="Observações"
+          name="observation"
+          isValid={validation.observation}
+          value={formData.observation}
+          onChange={handleInputChange}
+        />
+      </Frame>
+
+      <Title titleh2="Livro para dar entrada" />
+
+      <Cart onAddToCart={onAddToCart} cart={cart} />
+      <button onClick={handleSubmit}>Enviar pedido</button>
+
+      <SearchBarBook
+        title="Escolha um livro para dar entrada"
+        onSearch={handleFilter}
+      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <BooksList books={filteredBooks ?? []} onAddToCart={onAddToCart} />
+      )}
     </Main>
   )
 }
