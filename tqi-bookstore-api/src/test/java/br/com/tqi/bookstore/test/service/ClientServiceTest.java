@@ -99,7 +99,7 @@ public class ClientServiceTest {
     @Test
     void whenUpdateCalledThanReturnAClientUpdated() throws IdNotFoundException {
         Client expectedUpdatedClient = ClientBuilder.builder().build().toClient();
-        Client update = new Client("567890", "client 2", "66677788890", "email", new ArrayList<ItensSell>());
+        Client update = new Client("567890", "client 2", "66677788890","12345678", "email", new ArrayList<ItensSell>());
 
         when(clientRepository.findById(expectedUpdatedClient.getId())).thenReturn(Optional.of(expectedUpdatedClient));
 

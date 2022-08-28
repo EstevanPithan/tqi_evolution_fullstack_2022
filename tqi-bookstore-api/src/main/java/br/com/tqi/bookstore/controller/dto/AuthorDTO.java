@@ -19,4 +19,6 @@ public class AuthorDTO {
     private String id;
     private String name;
     private String birthday;
+    private String description;
+    private String image;
  }

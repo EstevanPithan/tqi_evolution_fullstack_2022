@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../components/Main'
-import SearchBar from '../../components/SearchBarBook'
 import Spinner from '../../components/Spinner'
-import BooksList from '../Homepage/BooksList'
-import Frame from '../../components/Frame'
-import ClientInfo from './ClientInfo'
-import Cart from './CartSell/Cart'
+import ClientsList from '../../components/ClientsList'
 import { api } from '../../services/api'
-import SearchBarClients from '../../components/SearchBarClients'
+import SearchAuthorClient from '../../components/SearchAuthorClient'
+import ClientInfo from '../../components/ClientInfo'
+import FrameNoScroll from '../../components/FrameNoScroll'
+import Frame from '../../components/Frame'
+
 import Title from '../../components/Title'
+import Cart from '../../components/CartSell'
+import SearchBar from '../../components/SearchBar'
+import BooksList from '../../components/BooksList'
 
 const NewSellOrder = () => {
-  const [formData, setFormData] = useState({
-    cpf: '',
-    client: { name: '-', email: '-', id: null }
-  })
-  const [validation, setValidation] = useState({ cpf: true })
   const [cart, setCart] = useState([])
 
   const [books, setBooks] = useState(null)
@@ -34,9 +32,7 @@ const NewSellOrder = () => {
     setFilteredBooks(books)
   }, [books])
 
-  const isLoading = books === null
-
-  const handleFilter = text => {
+  const handleFilterBooks = text => {
     setFilteredBooks(
       books.filter(
         book =>
@@ -92,11 +88,52 @@ const NewSellOrder = () => {
     })
   }
 
-  const onChangeCpfInput = event =>
-    setFormData(previous => ({ ...previous, cpf: event.target.value }))
+  const [clients, setClients] = useState(null)
+  const [clientChosen, setClientChosen] = useState([])
+  const [filteredClients, setFilteredClients] = useState(null)
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      const clientsFromServer = await api.get('/client/findAll/')
+      return setClients(clientsFromServer.data)
+    }
+
+    fetchClients()
+  }, [])
+
+  useEffect(() => {
+    setFilteredClients(clients)
+  }, [clients])
+
+  const isLoading = clients === null
+
+  const handleFilterClients = text => {
+    setFilteredClients(
+      clients.filter(
+        client =>
+          client.name.toLowerCase().includes(text.toLowerCase()) ||
+          client.cpf.toLowerCase().includes(text.toLowerCase())
+      )
+    )
+  }
+
+  const onAddTo = clientId => {
+    const clientObject = clients.find(client => client.id === clientId)
+    const clientOnChosen = clientChosen.find(item => item.id === clientId)
+
+    if (!clientOnChosen) {
+      setClientChosen([{ ...clientObject }])
+      return
+    }
+    return
+  }
+
+  useEffect(() => {
+    console.log(clientChosen)
+  }, [clientChosen])
 
   const handleSubmitOrder = async () => {
-    if (!formData.client.id) {
+    if (clientChosen === undefined) {
       alert('Selecione um cliente válido!')
       return
     }
@@ -109,7 +146,7 @@ const NewSellOrder = () => {
     const booksQnt = cart.map(book => book.quantity)
 
     const order = {
-      clientId: formData.client.id,
+      clientId: clientChosen[0].id,
       totalPrice,
       bookIds,
       booksQnt
@@ -123,54 +160,51 @@ const NewSellOrder = () => {
       alert('Erro ao enviar pedido.')
     }
   }
-  const handleSearchClient = async () => {
-    const cpfIsValid = formData.cpf.trim().length > 0
-    setValidation({ cpf: cpfIsValid })
-
-    if (!cpfIsValid) {
-      return
-    }
-
-    try {
-      const clientExists = await api.get(`/client/findByCpf/${formData.cpf}`)
-      setFormData(previous => ({ ...previous, client: clientExists.data }))
-    } catch (error) {
-      alert('Não foi encontrado cliente com o CPF informado.')
-    }
-  }
 
   return (
     <Main>
-      <Title titleh2="Nova venda" />
-      <SearchBarClients
-        title="CPF do cliente"
-        name="cpf"
-        isValid={validation.cpf}
-        value={formData.cpf}
-        onChange={onChangeCpfInput}
-        handleSearch={handleSearchClient}
+      <SearchAuthorClient
+        title="Escolha um cliente. nome ou cpf"
+        onSearch={handleFilterClients}
+        children={
+          isLoading ? (
+            <Spinner />
+          ) : (
+            <ClientsList
+              add="add"
+              clients={filteredClients ?? []}
+              onAddTo={onAddTo}
+            />
+          )
+        }
       />
 
-      <Frame>
-        <ClientInfo client={formData.client} />
-      </Frame>
-
-      <Title titleh2="Carrinho" />
-
-      <Cart
-        onAddToCart={onAddToCart}
-        onRemoveFromCart={onRemoveFromCart}
-        cart={cart}
+      <SearchBar
+        title="Escolha os livros para venda"
+        onSearch={handleFilterBooks}
       />
-
-      <button onClick={handleSubmitOrder}>Enviar pedido</button>
-
-      <SearchBar title="Adicionar Livros" onSearch={handleFilter} />
       {isLoading ? (
         <Spinner />
       ) : (
-        <BooksList books={filteredBooks ?? []} onAddToCart={onAddToCart} />
+        <Frame>
+          <BooksList
+            add="add"
+            books={filteredBooks ?? []}
+            onClick={onAddToCart}
+          />
+        </Frame>
       )}
+
+      <Title titleh3="Informações da venda" />
+      <FrameNoScroll>
+        <ClientInfo clients={clientChosen} />
+        <Cart
+          onAddToCart={onAddToCart}
+          onRemoveFromCart={onRemoveFromCart}
+          cart={cart}
+          onClick={handleSubmitOrder}
+        />
+      </FrameNoScroll>
     </Main>
   )
 }

@@ -1,32 +1,46 @@
 import React, { useState } from 'react'
-import Main from '../../components/Main'
 import Input from '../../components/Input'
 import { api } from '../../services/api'
+import RegisterTemplate from '../../components/RegisterTemplate'
 
-const initialFormData = { name: '', cpf: '', email: '' }
+const initialFormData = {
+  name: '',
+  cpf: '',
+  email: '',
+  phone: ''
+}
 
 const ClientsRegister = () => {
   const [formData, setFormData] = useState(initialFormData)
   const [validation, setValidation] = useState({
     name: true,
     cpf: true,
-    email: true
+    email: true,
+    phone: true
   })
 
   const handleInputChange = e =>
     setFormData(previous => ({ ...previous, [e.target.name]: e.target.value }))
 
   const validateInputs = form => {
-    const tempValidation = { name: true, cpf: true, email: true }
+    const tempValidation = {
+      name: true,
+      cpf: true,
+      email: true,
+      phone: true
+    }
 
     if (form.name.trim().length === 0) {
       tempValidation.name = false
     }
     if (form.cpf.trim().length === 0) {
-      tempValidation.cpf = false
+      tempValidation.image = false
     }
     if (form.email.trim().length === 0) {
-      tempValidation.email = false
+      tempValidation.author = false
+    }
+    if (form.phone.trim().length === 0) {
+      tempValidation.publishingCompany = false
     }
 
     setValidation(tempValidation)
@@ -48,18 +62,16 @@ const ClientsRegister = () => {
       alert('Cliente cadastrado!')
       setFormData(initialFormData)
     } catch (error) {
-      alert('Erro ao cadastrar Cliente.')
+      alert('Erro ao cadastrar cliente.')
     }
   }
 
   return (
-    <Main>
-      <main className="container">
-        <div className="search-bar-container">
-          <h2>Cadastro de Clientes</h2>
-        </div>
-
-        <div className="cards-wrapper">
+    <RegisterTemplate
+      title="Cadastro de cliente"
+      onClick={handleSubmit}
+      children={
+        <>
           <Input
             title="Nome"
             name="name"
@@ -67,13 +79,15 @@ const ClientsRegister = () => {
             value={formData.name}
             onChange={handleInputChange}
           />
+
           <Input
-            title="CPF"
+            title="CPF (Só numeros)"
             name="cpf"
             isValid={validation.cpf}
             value={formData.cpf}
             onChange={handleInputChange}
           />
+
           <Input
             title="Email"
             name="email"
@@ -81,13 +95,16 @@ const ClientsRegister = () => {
             value={formData.email}
             onChange={handleInputChange}
           />
-
-          <div className="registration-buttons">
-            <button onClick={handleSubmit}>Salvar</button>
-          </div>
-        </div>
-      </main>
-    </Main>
+          <Input
+            title="Telefone"
+            name="phone"
+            isValid={validation.phone}
+            value={formData.phone}
+            onChange={handleInputChange}
+          />
+        </>
+      }
+    />
   )
 }
 

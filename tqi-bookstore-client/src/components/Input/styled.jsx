@@ -30,3 +30,7 @@ export const WrapperInput = styled.div`
   justify-content: center;
   width: 100%;
 }`
+
+export const P = styled.p`
+color:red;
+}`

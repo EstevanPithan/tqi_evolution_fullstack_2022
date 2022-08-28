@@ -19,10 +19,13 @@ public class ClientBuilder {
     private String cpf = "11122233345";
 
     @Builder.Default
+    private String phone = "12345678";
+
+    @Builder.Default
     private String email = "test@test.com";
 
     @Builder.Default
     private List<ItensSell> itensSell = new ArrayList<>();
 
-    public Client toClient(){ return new Client(id, name, cpf, email, itensSell);}
+    public Client toClient(){ return new Client(id, name, cpf, phone, email, itensSell);}
 }

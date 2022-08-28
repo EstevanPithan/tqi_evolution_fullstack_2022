@@ -1,10 +1,11 @@
 import React from 'react'
 import * as S from './styled'
+import Title from '../Title'
 
-const Input = ({ title, isValid, value, onChange, name }) => {
+const Input = ({ title, isValid, value, onChange, name, Readonly }) => {
   return (
     <S.Wrapper>
-      <h3>{title}</h3>
+      <Title titleh3={title} />
       <S.WrapperInput>
         {isValid ? (
           <S.ValidInputBar
@@ -13,6 +14,7 @@ const Input = ({ title, isValid, value, onChange, name }) => {
             name={name}
             onChange={onChange}
             placeholder="Digite aqui..."
+            Readonly={Readonly}
           />
         ) : (
           <S.InvalidInputBar
@@ -21,11 +23,12 @@ const Input = ({ title, isValid, value, onChange, name }) => {
             name={name}
             onChange={onChange}
             placeholder="Digite aqui..."
+            Readonly={Readonly}
           />
         )}
       </S.WrapperInput>
       {!isValid && (
-        <p className="p-feedback-invalid">Digite um {title} válido.</p>
+        <S.P className="p-feedback-invalid">Digite um {title} válido.</S.P>
       )}
     </S.Wrapper>
   )

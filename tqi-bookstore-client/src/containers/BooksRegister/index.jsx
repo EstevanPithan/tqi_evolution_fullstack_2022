@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import Main from '../../components/Main'
+import React, { useState, useEffect } from 'react'
 import Input from '../../components/Input'
-import Frame from '../../components/Frame'
-
+import Spinner from '../../components/Spinner'
 import { api } from '../../services/api'
+import RegisterTemplate from '../../components/RegisterTemplate'
+import SearchAuthorClient from '../../components/SearchAuthorClient'
+import AuthorsList from '../../components/AuthorsList'
 
 const initialFormData = {
   name: '',
@@ -58,7 +59,51 @@ const BooksRegister = () => {
     return formIsValid
   }
 
+  const [authors, setAuthors] = useState(null)
+  const [authorChosen, setAuthorChosen] = useState([])
+  const [filteredAuthors, setFilteredAuthors] = useState(null)
+
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      const authorsFromServer = await api.get('/author/findAll/')
+      return setAuthors(authorsFromServer.data)
+    }
+
+    fetchAuthors()
+  }, [])
+
+  useEffect(() => {
+    setFilteredAuthors(authors)
+  }, [authors])
+
+  const isLoading = authors === null
+
+  const handleFilter = text => {
+    setFilteredAuthors(
+      authors.filter(author =>
+        author.name.toLowerCase().includes(text.toLowerCase())
+      )
+    )
+  }
+
+  const onAddTo = authorId => {
+    const authorObject = authors.find(author => author.id === authorId)
+    const authorOnChosen = authorChosen.find(item => item.id === authorId)
+
+    if (!authorOnChosen) {
+      setAuthorChosen([{ ...authorObject }])
+      return
+    }
+    return
+  }
+
+  useEffect(() => {
+    console.log(authorChosen)
+  }, [authorChosen])
+
   const handleSubmit = async () => {
+    formData.author = authorChosen[0].id
+
     const formIsValid = validateInputs(formData)
 
     if (!formIsValid) {
@@ -75,13 +120,36 @@ const BooksRegister = () => {
   }
 
   return (
-    <Main>
-      <main className="container">
-        <div className="search-bar-container">
-          <h2>Cadastro de Livro</h2>
-        </div>
+    <RegisterTemplate
+      title="Cadastro de livro"
+      onClick={handleSubmit}
+      children={
+        <>
+          <SearchAuthorClient
+            title="Escolha um autor"
+            onSearch={handleFilter}
+            children={
+              isLoading ? (
+                <Spinner />
+              ) : (
+                <AuthorsList
+                  add="add"
+                  authors={filteredAuthors ?? []}
+                  onAddTo={onAddTo}
+                />
+              )
+            }
+          />
 
-        <Frame>
+          <Input
+            title="Autor"
+            name="name"
+            isValid={validation.author}
+            value={authorChosen.map(author => author.name)}
+            onChange={handleInputChange}
+            Readonly="Readonly"
+          />
+
           <Input
             title="Título"
             name="name"
@@ -96,13 +164,7 @@ const BooksRegister = () => {
             value={formData.image}
             onChange={handleInputChange}
           />
-          <Input
-            title="Autor"
-            name="author"
-            isValid={validation.author}
-            value={formData.author}
-            onChange={handleInputChange}
-          />
+
           <Input
             title="Editora"
             name="publishingCompany"
@@ -117,13 +179,9 @@ const BooksRegister = () => {
             value={formData.year}
             onChange={handleInputChange}
           />
-
-          <div className="registration-buttons">
-            <button onClick={handleSubmit}>Salvar</button>
-          </div>
-        </Frame>
-      </main>
-    </Main>
+        </>
+      }
+    />
   )
 }
 

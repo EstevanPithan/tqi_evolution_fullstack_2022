@@ -1,14 +1,14 @@
-import { useNavigate } from "react-router";
-import { useAuth } from "../../contexts/UserContext";
+import { useNavigate } from 'react-router'
+import { useAuth } from '../../contexts/UserContext'
 
 const ProtectedRoute = ({ children }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useAuth()
 
-  if (!loggedUser) navigate("/");
+  if (!loggedUser) navigate('/')
 
-  return <>{children}</>;
-};
+  return <>{children}</>
+}
 
-export default ProtectedRoute;
+export default ProtectedRoute

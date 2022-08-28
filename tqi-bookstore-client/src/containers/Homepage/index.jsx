@@ -1,46 +1,18 @@
-import React, { useState, useEffect } from 'react'
-
-import SearchBarBook from '../../components/SearchBarBook'
+import React from 'react'
+import FrameNoScroll from '../../components/FrameNoScroll'
 import Main from '../../components/Main'
-import Spinner from '../../components/Spinner'
-import BooksList from './BooksList'
-import { api } from '../../services/api'
 
-const Homepage = () => {
-  const [books, setBooks] = useState(null)
-  const [filteredBooks, setFilteredBooks] = useState(null)
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const booksFromServer = await api.get('/book/findAll/')
-      return setBooks(booksFromServer.data)
-    }
-
-    fetchBooks()
-  }, [])
-
-  useEffect(() => {
-    setFilteredBooks(books)
-  }, [books])
-
-  const isLoading = books === null
-
-  const handleFilter = text => {
-    setFilteredBooks(
-      books.filter(
-        book =>
-          book.author.toLowerCase().includes(text.toLowerCase()) ||
-          book.name.toLowerCase().includes(text.toLowerCase())
-      )
-    )
-  }
-
+const Home = () => {
   return (
     <Main>
-      <SearchBarBook title="LIVROS" onSearch={handleFilter} />
-      {isLoading ? <Spinner /> : <BooksList books={filteredBooks ?? []} />}
+      <FrameNoScroll>
+        <h2>
+          BEM VINDO A TQI BOOKSTORE, UTILIZE O MENU LATERAL PARA ACESASR AS
+          FUNÇÕES DO SISTEMA!
+        </h2>
+      </FrameNoScroll>
     </Main>
   )
 }
 
-export default Homepage
+export default Home

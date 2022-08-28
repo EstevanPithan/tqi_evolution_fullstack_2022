@@ -65,6 +65,8 @@ public class AuthorService {
         author.setName(authorUpdate.getName());
         author.setBirthday(authorUpdate.getBirthday());
         author.setBook(authorUpdate.getBook());
+        author.setImage(authorUpdate.getImage());
+        author.setDescription(authorUpdate.getDescription());
         authorRepository.save(author);
         return author;
     }

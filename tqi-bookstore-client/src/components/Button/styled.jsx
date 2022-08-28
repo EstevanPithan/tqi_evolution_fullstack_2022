@@ -4,7 +4,7 @@ export const ButtonStyles = styled.button`
   width: 100px;
   height: 40px;
   border-radius: 10px;
-  margin: 5px;
+  margin: 20px;
 `
 export const Wrapper = styled.div`
   display: flex;

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../../components/Main'
-import SearchBarBook from '../../components/SearchBarBook'
+import SearchBar from '../../components/SearchBar'
 import Spinner from '../../components/Spinner'
-import BooksList from '../Homepage/BooksList'
+import BooksList from '../../components/BooksList'
 import Input from '../../components/Input'
-import Cart from './Cart'
-import { api } from '../../services/api'
+import Cart from '../../components/CartBuy'
 import Frame from '../../components/Frame'
+import Button from '../../components/Button'
+import { api } from '../../services/api'
+import FrameNoScroll from '../../components/FrameNoScroll'
 import Title from '../../components/Title'
 
 const initialFormData = {
@@ -16,7 +18,7 @@ const initialFormData = {
   quantity: ''
 }
 
-const NewSellOrder = () => {
+const NewBuyOrder = () => {
   const [formData, setFormData] = useState(initialFormData)
   const [cart, setCart] = useState([])
   const [validation, setValidation] = useState({
@@ -118,7 +120,7 @@ const NewSellOrder = () => {
     }
     try {
       await api.post('/entry/create', order)
-      alert('Entrade de compra feita!')
+      alert('Entrada de compra feita!')
       setFormData(initialFormData)
     } catch (error) {
       alert('Erro ao realizar a entrada de compra.')
@@ -127,8 +129,24 @@ const NewSellOrder = () => {
 
   return (
     <Main>
+      <SearchBar
+        title="Escolha um livro para dar entrada"
+        onSearch={handleFilter}
+      />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Frame>
+          <BooksList
+            add="add"
+            books={filteredBooks ?? []}
+            onClick={onAddToCart}
+          />
+        </Frame>
+      )}
+
       <Title titleh2="Dados para a entrada de compra" />
-      <Frame>
+      <FrameNoScroll>
         <Input
           title="Nº Nota Fiscal"
           name="invoiceNumber"
@@ -157,24 +175,18 @@ const NewSellOrder = () => {
           value={formData.observation}
           onChange={handleInputChange}
         />
-      </Frame>
-
-      <Title titleh2="Livro para dar entrada" />
+      </FrameNoScroll>
 
       <Cart onAddToCart={onAddToCart} cart={cart} />
-      <button onClick={handleSubmit}>Enviar pedido</button>
 
-      <SearchBarBook
-        title="Escolha um livro para dar entrada"
-        onSearch={handleFilter}
+      <Button
+        onClick1={handleSubmit}
+        title="Enviar pedido"
+        qntButton="1"
+        text1="Dar entrada de compra"
       />
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <BooksList books={filteredBooks ?? []} onAddToCart={onAddToCart} />
-      )}
     </Main>
   )
 }
 
-export default NewSellOrder
+export default NewBuyOrder

@@ -43,15 +43,15 @@ public class BookService {
     }
 
     @Transactional
-    public Book create(Book bookCreate) throws NameAlreadyRegisteredException, IdNotFoundException {
+    public Book create(Book bookCreate, String authorId) throws NameAlreadyRegisteredException, IdNotFoundException {
         verifyIfIsAlreadyRegistered(bookCreate.getName());
 
         String uuid = getUUID();
-//        Author author = authorService.findById(authorId);
+        Author author = authorService.findById(authorId);
         bookCreate.setId(uuid);
-//        bookCreate.setAuthor(author);
+        bookCreate.setAuthor(author);
         bookRepository.save(bookCreate);
-//        addBookOnAuthorList(bookCreate, author);
+        addBookOnAuthorList(bookCreate, author);
         return bookCreate;
     }
 

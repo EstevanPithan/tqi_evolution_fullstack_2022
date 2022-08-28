@@ -18,11 +18,8 @@ public class BookBuilder {
     @Builder.Default
     private String name = "book test";
 
-//    @Builder.Default
-//    private Author author = new Author("123456", "author for test", "14/10/1994",  new ArrayList<Book>());
-
     @Builder.Default
-    private String author = "auhtor";
+    private Author author = new Author("123456", "author for test", "14/10/1994", "Description", "ImageURL", new ArrayList<Book>());
 
     @Builder.Default
     private String publishingCompany = "company for book test";

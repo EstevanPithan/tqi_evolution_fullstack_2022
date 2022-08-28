@@ -1,9 +1,11 @@
 import React from 'react'
+import './styled.css'
 import { Link } from 'react-router-dom'
+
 const Header = () => {
   return (
     <header className="header-wrapper">
-      <div className="header">
+      <div>
         <div className="checkbox-container">
           <div className="checkbox-wrapper">
             <input type="checkbox" id="toggle" />
@@ -18,26 +20,34 @@ const Header = () => {
             <nav className="menu-items">
               <ul>
                 <li>
-                  <Link to="/newBuyOrder"> Comprar Livros</Link>
+                  <Link to="/newBuy"> Comprar Livros</Link>
                 </li>
                 <li>
-                  <Link to="/newSellOrder"> Vender Livros</Link>
+                  <Link to="/newSell"> Vender Livros</Link>
                 </li>
               </ul>
               <ul>
                 <li>CONSULTA</li>
                 <li>
-                  <Link to="/">Livros</Link>
+                  <Link to="/authors">Autores</Link>
+                </li>
+                <li>
+                  <Link to="/books">Livros</Link>
+                </li>
+                <li>
+                  <Link to="/clients">Clientes</Link>
                 </li>
               </ul>
               <ul>
                 <li>CADASTRO</li>
                 <li>
-                  <Link to="/newBook"> Livros</Link>
+                  <Link to="/authorsRegister">Autores</Link>
                 </li>
-
                 <li>
-                  <Link to="/newClient"> Clientes</Link>
+                  <Link to="/booksRegister">Livros</Link>
+                </li>
+                <li>
+                  <Link to="/clientsRegister">Clientes</Link>
                 </li>
               </ul>
             </nav>
@@ -46,7 +56,9 @@ const Header = () => {
       </div>
 
       <div className="brand-container">
-        <h1>TQI BOOKSTORE</h1>
+        <Link to="/">
+          <h1>TQI BOOKSTORE</h1>
+        </Link>
       </div>
     </header>
   )
